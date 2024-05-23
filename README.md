@@ -1,6 +1,10 @@
-# Final Greenfoot Project
-This is the README.md file.
+# Final Project: Space Shooter Game
 
-Consider using **Markdown** syntax to format the text in this file. [Markdown basics](https://www.markdownguide.org/getting-started/)
+Author: Ostin Hui
+Student Number: 349500348
+How to Play: TBA
+Last Updated: 5/23/2024
+
+
 
 
