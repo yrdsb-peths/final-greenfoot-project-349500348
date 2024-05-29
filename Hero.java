@@ -18,7 +18,7 @@ public class Hero extends Actor
     public void resize()
     {
         GreenfootImage img = new GreenfootImage("spaceship_idle.png");
-        img.scale(img.getWidth()/10, img.getHeight()/10);
+        img.scale(img.getWidth()/12, img.getHeight()/12);
         setImage(img);
     }
     /**
@@ -29,11 +29,11 @@ public class Hero extends Actor
     {
         if(Greenfoot.isKeyDown("up"))
         {
-            setLocation(getX(), getY() + 1);
+            setLocation(getX(), getY() - 3);
         }
         else if(Greenfoot.isKeyDown("down"))
         {
-            setLocation(getX(), getY() - 1);
+            setLocation(getX(), getY() + 3);
         }
     }
 }
