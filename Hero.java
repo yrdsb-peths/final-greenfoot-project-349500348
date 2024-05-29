@@ -27,6 +27,13 @@ public class Hero extends Actor
      */
     public void act()
     {
-        
+        if(Greenfoot.isKeyDown("up"))
+        {
+            setLocation(getX(), getY() + 1);
+        }
+        else if(Greenfoot.isKeyDown("down"))
+        {
+            setLocation(getX(), getY() - 1);
+        }
     }
 }
