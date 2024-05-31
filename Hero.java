@@ -27,6 +27,10 @@ public class Hero extends Actor
      */
     public void act()
     {
+        if (Greenfoot.isKeyDown("space"))
+        {
+            shoot();
+        }
         if(Greenfoot.isKeyDown("up"))
         {
             setLocation(getX(), getY() - 3);
@@ -35,5 +39,22 @@ public class Hero extends Actor
         {
             setLocation(getX(), getY() + 3);
         }
+    }
+    
+    public void shoot()
+    {
+
+        // Creates a Laser object
+        Laser laser = new Laser();
+        
+        // Gets world ship is in
+        World world = getWorld();
+        
+        // Set location of laser to tip of the ship
+        int x = getX() + (image.getWidth()/12) / 2;
+        int y = getY();
+        
+        // Add laser object at selected position
+        world.addObject(laser, x, y);
     }
 }
