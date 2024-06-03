@@ -5,15 +5,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * 
  * @author (your name) 
  * @version (a version number or a date)
- */
+ */ 
 public class Hero extends Actor
 {
     private GreenfootImage image;
+    private int shootTimer;
+    private final int shootSpeed = 20;
     
     public Hero()
     {
         image = getImage();
         resize();
+        shootTimer = 0; 
     }
     public void resize()
     {
@@ -27,9 +30,14 @@ public class Hero extends Actor
      */
     public void act()
     {
-        if (Greenfoot.isKeyDown("space"))
+        if (shootTimer > 0)
+        {
+            shootTimer--;
+        }
+        if (Greenfoot.isKeyDown("space") && shootTimer == 0)
         {
             shoot();
+            shootTimer = shootSpeed;
         }
         if(Greenfoot.isKeyDown("up"))
         {
