@@ -26,16 +26,27 @@ public class Laser extends Actor
         setImage(img);
     }
     
-    int speed = 5;
+    private int speed = 5;
     public void act()
     {
         // Move object at selected speed
         move(speed);
-        
         // Remove object when off screen
         if (isAtEdge())
         {
             getWorld().removeObject(this);
         }
+        else 
+        {
+            kill();
+        }
+    }
+    public void kill()
+    {
+        if(isTouching(Enemy.class))
+            {
+                removeTouching(Enemy.class);
+                getWorld().removeObject(this);
+            }
     }
 }
