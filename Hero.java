@@ -11,6 +11,7 @@ public class Hero extends Actor
     private GreenfootImage image;
     private int shootTimer;
     private final int shootSpeed = 20;
+    private final int speed = 4;
     
     public Hero()
     {
@@ -21,7 +22,7 @@ public class Hero extends Actor
     public void resize()
     {
         GreenfootImage img = new GreenfootImage("spaceship_idle.png");
-        img.scale(img.getWidth()/12, img.getHeight()/12);
+        img.scale(img.getWidth()/15, img.getHeight()/15);
         setImage(img);
     }
     /**
@@ -41,11 +42,11 @@ public class Hero extends Actor
         }
         if(Greenfoot.isKeyDown("up"))
         {
-            setLocation(getX(), getY() - 3);
+            setLocation(getX(), getY() - speed);
         }
         else if(Greenfoot.isKeyDown("down"))
         {
-            setLocation(getX(), getY() + 3);
+            setLocation(getX(), getY() + speed);
         }
     }
     
@@ -59,7 +60,7 @@ public class Hero extends Actor
         World world = getWorld();
         
         // Set location of laser to tip of the ship
-        int x = getX() + (image.getWidth()/12) / 2;
+        int x = getX() + (image.getWidth()/15) / 2;
         int y = getY();
         
         // Add laser object at selected position
