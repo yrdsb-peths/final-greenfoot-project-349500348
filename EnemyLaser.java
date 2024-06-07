@@ -51,6 +51,9 @@ public class EnemyLaser extends Actor
         if(isTouching(Hero.class))
             {
                 removeTouching(Hero.class);
+                MyWorld world = (MyWorld) getWorld();
+                world.gameOver();
+                world.gameOver = true;
                 getWorld().removeObject(this);
             }
     }

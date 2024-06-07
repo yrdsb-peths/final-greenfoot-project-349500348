@@ -9,7 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class MyWorld extends World
 {
     private int enemySpawnTimer = 0; 
-
+    public boolean gameOver = false;
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -24,17 +24,24 @@ public class MyWorld extends World
     
     public void act()
     {
-        // Increment the spawn timer
-        enemySpawnTimer++;
-        
-        // Check if it's time to spawn an enemy (every 120 frames, assuming 60 fps = 2 seconds)
-        if (enemySpawnTimer >= 120)
+        if(!gameOver)
         {
-            spawnEnemy();
-            enemySpawnTimer = 0; // Reset the timer
+            enemySpawnTimer++;
+        
+            // Check if it's time to spawn an enemy (every 120 frames, assuming 60 fps = 2 seconds)
+            if (enemySpawnTimer >= 120)
+            {
+                spawnEnemy();
+                enemySpawnTimer = 0; // Reset the timer
+            }
         }
+
     }
-    
+    public void gameOver()
+    {
+        Label gameOverLabel = new Label("Game Over", 100);
+        addObject(gameOverLabel, 300, 200);
+    }
     public void spawnEnemy()
     {
         Enemy enemy = new Enemy();
