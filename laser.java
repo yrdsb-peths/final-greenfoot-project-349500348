@@ -1,52 +1,49 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*; 
 
 /**
- * Write a description of class laser here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Write a description of class Laser here.
+ * @author Ostin H
+ * @version 06/10/2024
  */
 public class Laser extends Actor
 {
-    private GreenfootImage image;
+    private final int speed = 5; // speed at which the laser moves
 
-    /**
-     * Act - do whatever the laser wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     public Laser()
     {
-        image = getImage();
-        resize();
-    }
-    public void resize()
-    {
-        GreenfootImage img = new GreenfootImage("laser.png");
-        img.scale(img.getWidth()/4, img.getHeight()/4);
-        setImage(img);
+        resize(); // resize the laser image
     }
     
-    private int speed = 5;
+    public void resize()
+    {
+        GreenfootImage img = new GreenfootImage("laser.png"); // load the laser image
+        img.scale(img.getWidth() / 4, img.getHeight() / 4); // scale down the image
+        setImage(img); // set the scaled image as the laser's image
+    }
+    
+    /**
+     * Act - do whatever the Laser wants to do. This method is called whenever
+     * the 'Act' or 'Run' button gets pressed in the environment.
+     */
     public void act()
     {
-        // Move object at selected speed
-        move(speed);
-        // Remove object when off screen
-        if (isAtEdge())
+        move(speed); // move the laser forward at the set speed
+        if (isAtEdge()) // check if the laser is at the edge of the screen
         {
-            getWorld().removeObject(this);
+            getWorld().removeObject(this); // remove the laser from the world if it is at the edge
         }
         else 
         {
-            kill();
+            kill(); // check for collisions with enemies
         }
     }
+    
     public void kill()
     {
-        if(isTouching(Enemy.class))
-            {
-                removeTouching(Enemy.class);
-                getWorld().removeObject(this);
-            }
+        if (isTouching(Enemy.class)) // check if the laser is touching an enemy
+        {
+            removeTouching(Enemy.class); // remove the enemy that the laser is touching
+            getWorld().removeObject(this); // remove the laser from the world
+        }
     }
 }

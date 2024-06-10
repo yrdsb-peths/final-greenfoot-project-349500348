@@ -3,8 +3,8 @@ import greenfoot.*;
 /**
  * Write a description of class Hero here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Ostin H
+ * @version 06/10/2024
  */ 
 public class Hero extends Actor
 {

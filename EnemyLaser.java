@@ -1,60 +1,54 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;  
 
 /**
- * Write a description of class Enemy_Laser here.
+ * Write a description of class EnemyLaser here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Ostin H
+ * @version 06/10/2024
  */
 public class EnemyLaser extends Actor
 {
-    /**
-     * Act - do whatever the Enemy_Laser wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    private GreenfootImage image;
+    private final int speed = 4; // speed at which the enemy laser moves
 
-    /**
-     * Act - do whatever the laser wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
     public EnemyLaser()
     {
-        setRotation(180);
-        image = getImage();
-        resize();
-    }
-    public void resize()
-    {
-        GreenfootImage img = new GreenfootImage("enemy_laser.png");
-        img.scale(img.getWidth()/4, img.getHeight()/4);
-        setImage(img);
+        setRotation(180); // set the rotation of the laser to face downward
+        resize(); // resize the enemy laser image
     }
     
-    private int speed = 4;
+    public void resize()
+    {
+        GreenfootImage img = new GreenfootImage("enemy_laser.png"); // load the enemy laser image
+        img.scale(img.getWidth() / 4, img.getHeight() / 4); // scale down the image
+        setImage(img); // set the scaled image as the enemy laser's image
+    }
+    
+    /**
+     * Act - do whatever the EnemyLaser wants to do. This method is called whenever
+     * the 'Act' or 'Run' button gets pressed in the environment.
+     */
     public void act()
     {
-        // Move object at selected speed
-        move(speed);
-        // Remove object when off screen
-        if (isAtEdge())
+        move(speed); // move the enemy laser forward at the set speed
+        if (isAtEdge()) // check if the laser is at the edge of the screen
         {
-            getWorld().removeObject(this);
+            getWorld().removeObject(this); // remove the laser from the world if it is at the edge
         }
         else 
         {
-            kill();
+            kill(); // check for collisions with the hero
         }
     }
+    
     public void kill()
     {
-        if(isTouching(Hero.class))
-            {
-                removeTouching(Hero.class);
-                MyWorld world = (MyWorld) getWorld();
-                world.gameOver();
-                world.gameOver = true;
-                getWorld().removeObject(this);
-            }
+        if (isTouching(Hero.class)) // check if the laser is touching the hero
+        {
+            removeTouching(Hero.class); // remove the hero that the laser is touching
+            MyWorld world = (MyWorld) getWorld(); // get the world the laser is in
+            world.gameOver(); // call the game over method
+            world.gameOver = true; // set the gameOver flag to true
+            getWorld().removeObject(this); // remove the laser from the world
+        }
     }
 }
