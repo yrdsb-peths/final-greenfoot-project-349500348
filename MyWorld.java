@@ -10,7 +10,8 @@ public class MyWorld extends World
 {
     private int enemySpawnTimer = 0; // variable to count frames for enemy spawning
     public boolean gameOver = false; // flag to indicate if the game is over
-    
+    public int score = 0;
+    Label scoreLabel = new Label(0, 80);
     /**
      * Constructor for objects of class MyWorld.
      */
@@ -22,6 +23,7 @@ public class MyWorld extends World
         // Create a new Hero object and add it to the world
         Hero hero = new Hero();
         addObject(hero, 70, 300);
+        addObject(scoreLabel, getWidth()/2, 30);
     }
     
     /**
@@ -41,6 +43,11 @@ public class MyWorld extends World
                 enemySpawnTimer = 0; // reset the timer
             }
         }
+    }
+    public void increaseScore()
+    {
+        score = score + 50;
+        scoreLabel.setValue(score);
     }
 
     public void gameOver()
