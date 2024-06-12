@@ -4,7 +4,7 @@ import greenfoot.*;
  * Write a description of class MyWorld here.
  * 
  * @author Ostin H
- * @version 06/10/2024
+ * @version 06/12/2024
  */
 public class MyWorld extends World
 {
