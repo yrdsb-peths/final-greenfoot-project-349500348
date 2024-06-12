@@ -42,6 +42,8 @@ public class Laser extends Actor
     {
         if (isTouching(Enemy.class)) // check if the laser is touching an enemy
         {
+            MyWorld world = (MyWorld) getWorld();
+            world.increaseScore();
             removeTouching(Enemy.class); // remove the enemy that the laser is touching
             getWorld().removeObject(this); // remove the laser from the world
         }

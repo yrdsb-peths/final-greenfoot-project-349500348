@@ -12,6 +12,12 @@ public class MyWorld extends World
     public boolean gameOver = false; // flag to indicate if the game is over
     public int score = 0;
     Label scoreLabel = new Label(0, 80);
+    Label levelLabel = new Label("Level 1", 80);
+    public int spawnInterval = 180;
+    int level = 1; // level increases enemy spawn rate and bullet speed
+    private int levelUpMessageTimer = 0; 
+    private Label levelUpLabel;
+    private int skipCooldown = 0;
     /**
      * Constructor for objects of class MyWorld.
      */
@@ -24,6 +30,7 @@ public class MyWorld extends World
         Hero hero = new Hero();
         addObject(hero, 70, 300);
         addObject(scoreLabel, getWidth()/2, 30);
+        addObject(levelLabel, 105, 30);
     }
     
     /**
@@ -37,19 +44,57 @@ public class MyWorld extends World
             enemySpawnTimer++; // increment the enemy spawn timer
             
             // Check if it's time to spawn an enemy (every 120 frames, assuming 60 fps = 2 seconds)
-            if (enemySpawnTimer >= 120)
+            if (enemySpawnTimer >= spawnInterval)
             {
                 spawnEnemy(); // call the spawnEnemy method
                 enemySpawnTimer = 0; // reset the timer
             }
+            if (levelUpMessageTimer > 0)
+            {
+                levelUpMessageTimer--;
+                if (levelUpMessageTimer == 0)
+                {
+                    removeObject(levelUpLabel); // Remove the "Level Up!" label after timer ends
+                }
+            }
+            if (skipCooldown > 0) 
+            {
+                skipCooldown--;
+            }
+
+            if (Greenfoot.isKeyDown("p") && skipCooldown == 60) 
+            {
+                levelUp(); // Cheat key action: Level up
+                skipCooldown = 65; // Reset cooldown
+            }
         }
+    }
+    public void levelUp() 
+    {
+        level++;
+        levelLabel.setValue("Level " + level); // Update the level label
+        updateSpawnInterval(); // Update the spawn interval based on the new level
+        showLevelUpMessage(); // Show "Level Up!" message
     }
     public void increaseScore()
     {
-        score = score + 50;
-        scoreLabel.setValue(score);
+        score += 50; // Increase score by 50
+        scoreLabel.setValue(score); // Update the score label
+        
+        // Check if the score is a multiple of 500 to level up
+        if (score % 500 == 0)
+        {
+            level++;
+            levelLabel.setValue("Level " + level); // Update the level label
+            updateSpawnInterval(); // Update the spawn interval based on the new level
+            showLevelUpMessage();
+        }
     }
-
+    private void updateSpawnInterval()
+    {
+        // Decrease the spawn interval as the level increases, minimum of 30
+        spawnInterval = Math.max(180 - (level - 1) * 10, 30);
+    }
     public void gameOver()
     {
         Label gameOverLabel = new Label("Game Over", 100); // create a Label object with "Game Over" text
@@ -65,5 +110,15 @@ public class MyWorld extends World
         int y = Greenfoot.getRandomNumber(getHeight()); // Random y position
         
         addObject(enemy, x, y); // add the enemy to the world at the calculated position
+    }
+    private void showLevelUpMessage()
+    {
+        if (levelUpLabel != null)
+        {
+            removeObject(levelUpLabel); // remove previous label (fail safe)
+        }
+        levelUpLabel = new Label("Level Up!", 100); // create level up label
+        addObject(levelUpLabel, getWidth() / 2, getHeight() / 2); // add label to middle
+        levelUpMessageTimer = 60; // displays for 60 frames
     }
 }

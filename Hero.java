@@ -48,6 +48,7 @@ public class Hero extends Actor
         {
             setLocation(getX(), getY() + speed); // move the Hero down
         }
+        checkCollision();
     }
     
     public void shoot()
@@ -62,5 +63,17 @@ public class Hero extends Actor
         int y = getY();
         
         world.addObject(laser, x, y); // adds the laser object to the world at the calculated position
+    }
+    private void checkCollision()
+    {
+        // Check for collision with Enemy
+        if (isTouching(Enemy.class))
+        {
+            removeTouching(Enemy.class); // remove the enemy that the hero is touching
+            MyWorld world = (MyWorld) getWorld(); // get the world the hero is in
+            world.gameOver(); // call the game over method
+            world.gameOver = true; // set the gameOver flag to true
+            getWorld().removeObject(this); // remove the hero from the world
+        }
     }
 }
