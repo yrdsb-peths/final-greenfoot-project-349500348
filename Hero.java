@@ -31,31 +31,35 @@ public class Hero extends Actor
      */
     public void act()
     {
-        if (shootTimer > 0) // check if the shoot timer is greater than 0
+        MyWorld world = (MyWorld) getWorld();
+        if(!world.gameOver) 
         {
-            shootTimer--; // decrement the shoot timer
+            if (shootTimer > 0) // check if the shoot timer is greater than 0
+            {
+                shootTimer--; // decrement the shoot timer
+            }
+            if (Greenfoot.isKeyDown("space") && shootTimer == 0) // check if space key is pressed and shoot timer is 0
+            {
+                shoot(); // call the shoot method
+                shootTimer = shootSpeed; // reset the shoot timer
+            }
+            if (Greenfoot.isKeyDown("up")) // check if the up key is pressed
+            {
+                setLocation(getX(), getY() - speed); // move the Hero up
+            }
+            else if (Greenfoot.isKeyDown("down")) // check if the down key is pressed
+            {
+                setLocation(getX(), getY() + speed); // move the Hero down
+            }
+            checkCollision();
         }
-        if (Greenfoot.isKeyDown("space") && shootTimer == 0) // check if space key is pressed and shoot timer is 0
-        {
-            shoot(); // call the shoot method
-            shootTimer = shootSpeed; // reset the shoot timer
-        }
-        if (Greenfoot.isKeyDown("up")) // check if the up key is pressed
-        {
-            setLocation(getX(), getY() - speed); // move the Hero up
-        }
-        else if (Greenfoot.isKeyDown("down")) // check if the down key is pressed
-        {
-            setLocation(getX(), getY() + speed); // move the Hero down
-        }
-        checkCollision();
     }
     
     public void shoot()
     {
         Laser laser = new Laser(); // creates a Laser object
         
-        World world = getWorld(); // gets the world the Hero is in
+        MyWorld world = (MyWorld) getWorld(); // gets the world the Hero is in
         
         // calculates the location to place the laser at the tip of the ship
         GreenfootImage image = getImage(); // gets the current image of the Hero
@@ -63,6 +67,10 @@ public class Hero extends Actor
         int y = getY();
         
         world.addObject(laser, x, y); // adds the laser object to the world at the calculated position
+    }
+    private boolean isRemoved() 
+    {
+        return getWorld() == null;
     }
     private void checkCollision()
     {

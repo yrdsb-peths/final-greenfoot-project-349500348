@@ -34,7 +34,7 @@ public class EnemyLaser extends Actor
         {
             getWorld().removeObject(this); // remove the laser from the world if it is at the edge
         }
-        else 
+        else
         {
             kill(); // check for collisions with the hero
         }
@@ -42,13 +42,13 @@ public class EnemyLaser extends Actor
     
     public void kill()
     {
+        MyWorld world = (MyWorld) getWorld();
         if (isTouching(Hero.class)) // check if the laser is touching the hero
         {
             removeTouching(Hero.class); // remove the hero that the laser is touching
-            MyWorld world = (MyWorld) getWorld(); // get the world the laser is in
             world.gameOver(); // call the game over method
             world.gameOver = true; // set the gameOver flag to true
-            getWorld().removeObject(this); // remove the laser from the world
+            getWorld().removeObject(this); // remove the laser from the world   
         }
     }
 }
