@@ -1,7 +1,8 @@
 import greenfoot.*;
 
 /**
- * Write a description of class MyWorld here.
+ * The game world where gameplay takes place.
+ * Manages spawning of enemies, powerups, game over scenarios, and game reset functionality.
  * 
  * @author Ostin H.
  * @version 06/14/2024
@@ -10,24 +11,15 @@ public class MyWorld extends World
 {
     GreenfootSound gameOverSound = new GreenfootSound("gameover.mp3");
     GreenfootSound levelUpSound = new GreenfootSound("levelup.mp3");
-    private int shieldSpawnTimer = 0; // variable to count frames for shield spawning
-    private int enemySpawnTimer = 0; // variable to count frames for enemy spawning
+    private int[] timers = {0, 0, 0, 0, 0}; // Array of timers 0: shieldSpawnTimer, 1: enemySpawnTimer, 2: levelUpMessageTimer
     public boolean gameOver = false; // flag to indicate if the game is over
     private boolean isPlaying = false; // flag to indicate if the game is currently playing
     public int score = 0; // current score of the game
-    Label scoreLabel = new Label(0, 80); // Label object to display the score
-    Label levelLabel = new Label("Level 1", 80); // Label object to display the current level
+    Label[] labels = {new Label(0, 80), new Label("Level 1", 80), new Label("Level Up!", 100), new Label("Highscore: 0", 50), new Label("Press P to Play Again", 50), new Label("Game Over", 100)}; // Array of labels 0: scoreLabel, 1: levelLabel, 2: levelUpLabel, 3: highscoreLabel, 4: playAgainLabel, 5: gameOverLabel
     private int spawnInterval = 180; // interval for enemy spawning
     int level = 1; // level increases enemy spawn rate and bullet speed
-    private int levelUpMessageTimer = 0; // timer for displaying the "Level Up!" message
-    private int skipCooldown = 0; // cooldown for the cheat key action
-    private int shieldCheatCooldown = 0; // cooldown for spawning shields using cheat key
-    private int highscore = 0; // highest score achieved in the game
-    Label levelUpLabel = new Label("Level Up!", 100); // Label object to display "Level Up!" message
-    Label highscoreLabel = new Label("Highscore: " + highscore, 50); // Label object to display the highscore
-    Label playAgainLabel = new Label("Press P to Play Again", 50); // Label object to prompt player to play again
-    Label gameOverLabel = new Label("Game Over", 100); // Label object to display "Game Over" message
     private final int shieldSpawnInterval = 840; // interval for shield spawning
+    private int highscore = 0; // highest score achieved in the game session
 
     /**
      * Constructor for objects of class MyWorld.
@@ -40,8 +32,8 @@ public class MyWorld extends World
         // Create a new Hero object and add it to the world
         Hero hero = new Hero();
         addObject(hero, 70, 300);
-        addObject(scoreLabel, getWidth()/2, 30);
-        addObject(levelLabel, 105, 30);
+        addObject(labels[0], getWidth()/2, 30);
+        addObject(labels[1], 105, 30);
     }
     
     /**
@@ -52,57 +44,57 @@ public class MyWorld extends World
     {
         if (!gameOver) // check if the game is not over
         {
-            enemySpawnTimer++; // increment the enemy spawn timer
-            shieldSpawnTimer++; // increment the shield spawn timer
+            timers[1]++; // increment the enemy spawn timer
+            timers[0]++; // increment the shield spawn timer
             
             // Check if it's time to spawn an enemy
-            if (enemySpawnTimer >= spawnInterval)
+            if (timers[1] >= spawnInterval)
             {
                 spawnEnemy(); // call the spawnEnemy method
-                enemySpawnTimer = 0; // reset the timer
+                timers[1] = 0; // reset the timer
             }
             
             // Check if it's time to spawn a shield
-            if (shieldSpawnTimer >= shieldSpawnInterval)
+            if (timers[0] >= shieldSpawnInterval)
             {
                 spawnShield(); // call the spawnShield method
-                shieldSpawnTimer = 0; // reset the timer
+                timers[0] = 0; // reset the timer
             }
             
             // Check if it's time to remove the "Level Up!" message
-            if (levelUpMessageTimer > 0)
+            if (timers[2] > 0)
             {
-                levelUpMessageTimer--; // decrement the timer
-                if (levelUpMessageTimer == 0)
+                timers[2]--; // decrement the timer
+                if (timers[2] == 0)
                 {
-                    removeObject(levelUpLabel); // Remove the "Level Up!" label after timer ends
+                    removeObject(labels[2]); // Remove the "Level Up!" label after timer ends
                 }
             }
             
             // Check cooldown for cheat key action
-            if (skipCooldown > 0) 
+            if (timers[3] > 0) 
             {
-                skipCooldown--; // decrement the cooldown
+                timers[3]--; // decrement the cooldown
             }
             
             // Check cooldown for shield cheat key action
-            if (shieldCheatCooldown > 0) 
+            if (timers[4] > 0) 
             {
-                shieldCheatCooldown--; // decrement the cooldown
+                timers[4]--; // decrement the cooldown
             }
             
             // Check if cheat key is pressed and cooldown is over
-            if (Greenfoot.isKeyDown("l") && skipCooldown <= 0) 
+            if (Greenfoot.isKeyDown("l") && timers[3] <= 0) 
             {
                 levelUp(); // Cheat key action: Level up
-                skipCooldown = 65; // Reset cooldown
+                timers[3] = 65; // Reset cooldown
             }
             
             // Check if shield cheat key is pressed and cooldown is over
-            if (Greenfoot.isKeyDown("s") && shieldCheatCooldown <= 0)
+            if (Greenfoot.isKeyDown("s") && timers[4] <= 0)
             {
                 spawnShield(); // Cheat key action: Spawn shield
-                shieldCheatCooldown = 30; // Set cooldown for shield cheat
+                timers[4] = 30; // Set cooldown for shield cheat
             }
         }
         else // if the game is over
@@ -120,7 +112,7 @@ public class MyWorld extends World
     public void levelUp() 
     {
         level++; // Increment the level
-        levelLabel.setValue("Level " + level); // Update the level label
+        labels[1].setValue("Level " + level); // Update the level label
         updateSpawnInterval(); // Update the spawn interval based on the new level
         showLevelUpMessage(); // Show "Level Up!" message
     }
@@ -130,9 +122,9 @@ public class MyWorld extends World
      */
     private void updateHighscoreLabel() 
     {
-        if (highscoreLabel != null) 
+        if (labels[3] != null) 
         {
-            highscoreLabel.setValue("Highscore: " + highscore); // Update the highscore label
+            labels[3].setValue("Highscore: " + highscore); // Update the highscore label
         }
     }
     
@@ -143,13 +135,13 @@ public class MyWorld extends World
     public void increaseScore()
     {
         score += 50; // Increase score by 50
-        scoreLabel.setValue(score); // Update the score label
+        labels[0].setValue(score); // Update the score label
         
         // Check if the score is a multiple of 500 to level up
         if (score % 500 == 0)
         {
             level++;
-            levelLabel.setValue("Level " + level); // Update the level label
+            labels[1].setValue("Level " + level); // Update the level label
             updateSpawnInterval(); // Update the spawn interval based on the new level
             showLevelUpMessage();
         }
@@ -179,11 +171,12 @@ public class MyWorld extends World
         gameOverSound.play();
         removeObjects(getObjects(Enemy.class)); // Remove all Enemy objects from the world
         removeObjects(getObjects(EnemyLaser.class)); // Remove all EnemyLaser objects from the world
-        
+        removeObjects(getObjects(Shield.class)); // Remove all Shield objects from the world
+
         gameOver = true; // Set the game over flag to true
-        addObject(gameOverLabel, 300, 200); // Add the "Game Over" label to the world
-        addObject(highscoreLabel, getWidth() / 2, getHeight() / 2 + 50); // Add the highscore label to the world
-        addObject(playAgainLabel, getWidth() / 2, getHeight() / 2 + 100); // Add the "Press P to Play Again" label to the world
+        addObject(labels[5], 300, 200); // Add the "Game Over" label to the world
+        addObject(labels[3], getWidth() / 2, getHeight() / 2 + 50); // Add the highscore label to the world
+        addObject(labels[4], getWidth() / 2, getHeight() / 2 + 100); // Add the "Press P to Play Again" label to the world
     }
     
     /**
@@ -206,8 +199,8 @@ public class MyWorld extends World
     private void showLevelUpMessage()
     {  
         levelUpSound.play();
-        addObject(levelUpLabel, getWidth() / 2, getHeight() / 2); // Add the "Level Up!" label to the middle of the screen
-        levelUpMessageTimer = 60; // Displays for 60 frames
+        addObject(labels[2], getWidth() / 2, getHeight() / 2); // Add the "Level Up!" label to the middle of the screen
+        timers[2] = 60; // Displays for 60 frames
     }
     
     /**
@@ -215,8 +208,8 @@ public class MyWorld extends World
      */
     private void updateLabels()
     {
-        scoreLabel.setValue(score); // Update score label
-        levelLabel.setValue("Level " + level); // Update level label
+        labels[0].setValue(score); // Update score label
+        labels[1].setValue("Level " + level); // Update level label
         updateHighscoreLabel(); // Update highscore label
     }
     
@@ -230,21 +223,21 @@ public class MyWorld extends World
         removeObjects(getObjects(Actor.class));
         
         // Reset game variables
-        enemySpawnTimer = 0;
+        timers[1] = 0;
         gameOver = false;
         isPlaying = true;
         score = 0;
         level = 1;
         spawnInterval = 180;
-        levelUpMessageTimer = 0;
-        skipCooldown = 0;
+        timers[2] = 0;
+        timers[3] = 0;
     
         // Add initial objects
         Hero hero = new Hero();
         addObject(hero, 70, 300);
-        addObject(scoreLabel, getWidth()/2, 30);
-        addObject(levelLabel, 105, 30);
-        updateHighscoreLabel(); // Ensure highscoreLabel is added to the world
+        addObject(labels[0], getWidth()/2, 30);
+        addObject(labels[1], 105, 30);
+        updateHighscoreLabel(); // Ensure highscore label is added to the world
         
         updateLabels(); // Update score, level, and highscore labels
     }

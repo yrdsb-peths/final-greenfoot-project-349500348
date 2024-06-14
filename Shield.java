@@ -1,7 +1,8 @@
 import greenfoot.*;  // import necessary classes from Greenfoot package
 
 /**
- * Write a description of class Shield here.
+ * a shield power-up that moves left towards the hero, protects hero from one hit
+ * Inherits from the Actor class.
  * 
  * @author Ostin H.
  * @version 06/14/2024

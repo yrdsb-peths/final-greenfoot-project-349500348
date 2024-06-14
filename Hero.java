@@ -3,7 +3,9 @@
 import greenfoot.*;
 
 /**
- * Write a description of class Hero here.
+ * Player-controlled character
+ * Hero can move up and down, shoot lasers, and collect shields
+ * Inherits from Actor class
  * 
  * @author Ostin H.
  * @version 06/14/2024

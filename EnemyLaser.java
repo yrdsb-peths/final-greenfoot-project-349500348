@@ -1,8 +1,8 @@
 import greenfoot.*;  // import necessary classes from Greenfoot package
 
 /**
- * Write a description of class EnemyLaser here.
- * 
+ * An enemy laser shot from enemy spaceships.
+ * Inherits from the Actor class.
  * @author Ostin H.
  * @version 06/14/2024
  */

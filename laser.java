@@ -1,7 +1,8 @@
 import greenfoot.*; 
 
 /**
- * Write a description of class Laser here.
+ * a laser shot from the Hero spaceship and destroys enemy objects on contact.
+ * Inherits from the Actor class.
  * 
  * @author Ostin H.
  * @version 06/14/2024
