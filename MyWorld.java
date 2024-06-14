@@ -11,11 +11,11 @@ public class MyWorld extends World
 {
     GreenfootSound gameOverSound = new GreenfootSound("gameover.mp3");
     GreenfootSound levelUpSound = new GreenfootSound("levelup.mp3");
-    private int[] timers = {0, 0, 0, 0, 0}; // Array of timers 0: shieldSpawnTimer, 1: enemySpawnTimer, 2: levelUpMessageTimer
+    private int[] timers = {0, 0, 0, 0, 0}; // Array of timers 0: shield spawn timer, 1: enemy spawn timer, 2: level up message timer, 3: skip cooldown, 4: shield cheat cooldown
     public boolean gameOver = false; // flag to indicate if the game is over
     private boolean isPlaying = false; // flag to indicate if the game is currently playing
     public int score = 0; // current score of the game
-    Label[] labels = {new Label(0, 80), new Label("Level 1", 80), new Label("Level Up!", 100), new Label("Highscore: 0", 50), new Label("Press P to Play Again", 50), new Label("Game Over", 100)}; // Array of labels 0: scoreLabel, 1: levelLabel, 2: levelUpLabel, 3: highscoreLabel, 4: playAgainLabel, 5: gameOverLabel
+    Label[] labels = {new Label(0, 80), new Label("Level 1", 80), new Label("Level Up!", 100), new Label("Highscore: 0", 50), new Label("Press P to Play Again", 50), new Label("Game Over", 100)}; // Array of labels 0: score label, 1: level label, 2: level up label, 3: highscore label, 4: play again label, 5: game over label
     private int spawnInterval = 180; // interval for enemy spawning
     int level = 1; // level increases enemy spawn rate and bullet speed
     private final int shieldSpawnInterval = 840; // interval for shield spawning
@@ -223,14 +223,16 @@ public class MyWorld extends World
         removeObjects(getObjects(Actor.class));
         
         // Reset game variables
+        timers[0] = 0;
         timers[1] = 0;
+        timers[2] = 0;
+        timers[3] = 0;
         gameOver = false;
         isPlaying = true;
         score = 0;
         level = 1;
         spawnInterval = 180;
-        timers[2] = 0;
-        timers[3] = 0;
+    
     
         // Add initial objects
         Hero hero = new Hero();
