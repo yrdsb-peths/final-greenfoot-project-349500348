@@ -27,7 +27,7 @@ public class MyWorld extends World
     Label highscoreLabel = new Label("Highscore: " + highscore, 50); // Label object to display the highscore
     Label playAgainLabel = new Label("Press P to Play Again", 50); // Label object to prompt player to play again
     Label gameOverLabel = new Label("Game Over", 100); // Label object to display "Game Over" message
-    private final int shieldSpawnInterval = 900; // interval for shield spawning
+    private final int shieldSpawnInterval = 840; // interval for shield spawning
 
     /**
      * Constructor for objects of class MyWorld.
