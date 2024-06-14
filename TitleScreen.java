@@ -1,10 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- *Title Screen.
+ *  Title Screen.
  * 
- * @author Ostin Hui
- * @version 5/21/24
+ * @author Ostin H.
+ * @version 06/14/24
  */
 public class TitleScreen extends World
 {
@@ -26,6 +26,9 @@ public class TitleScreen extends World
         prepare();
     }
 
+    /**
+     * Check for user input to start the game.
+     */
     public void act()
     {
         if(Greenfoot.isKeyDown("enter"))
@@ -42,8 +45,5 @@ public class TitleScreen extends World
     private void prepare()
     {
         Hero hero = new Hero();
-        addObject(hero,466,210);
-        hero.setLocation(297,127);
-        removeObject(hero);
     }
 }

@@ -1,17 +1,21 @@
-import greenfoot.*;  
+// import the Greenfoot package
+
+import greenfoot.*;
 
 /**
  * Write a description of class Hero here.
  * 
- * @author Ostin H
- * @version 06/10/2024
+ * @author Ostin H.
+ * @version 06/14/2024
  */ 
 public class Hero extends Actor
 {
     private int shootTimer; // variable to count frames between shots
     private final int shootSpeed = 20; // number of frames before Hero can shoot again
     private final int speed = 4; // number of pixels the Hero moves per frame while key is pressed
-    
+    private boolean hasShield = false; // indicates if the Hero has a shield
+    private boolean removedFromWorld = false; // indicates if the Hero has been removed from the world
+
     public Hero()
     {
         resize(); // resize the Hero's image 
@@ -31,8 +35,8 @@ public class Hero extends Actor
      */
     public void act()
     {
-        MyWorld world = (MyWorld) getWorld();
-        if(!world.gameOver) 
+        MyWorld world = (MyWorld) getWorld(); // get the world the Hero is in
+        if(!world.gameOver) // check if the game is not over
         {
             if (shootTimer > 0) // check if the shoot timer is greater than 0
             {
@@ -51,7 +55,7 @@ public class Hero extends Actor
             {
                 setLocation(getX(), getY() + speed); // move the Hero down
             }
-            checkCollision();
+            checkCollision(); // check for collisions
         }
     }
     
@@ -68,20 +72,64 @@ public class Hero extends Actor
         
         world.addObject(laser, x, y); // adds the laser object to the world at the calculated position
     }
-    private boolean isRemoved() 
-    {
-        return getWorld() == null;
-    }
+    
     private void checkCollision()
     {
-        // Check for collision with Enemy
-        if (isTouching(Enemy.class))
+        //check for collision with shield
+        if (isTouching(Shield.class)) 
         {
-            removeTouching(Enemy.class); // remove the enemy that the hero is touching
-            MyWorld world = (MyWorld) getWorld(); // get the world the hero is in
-            world.gameOver(); // call the game over method
-            world.gameOver = true; // set the gameOver flag to true
-            getWorld().removeObject(this); // remove the hero from the world
+            collectShield(); // collect the shield
         }
+        // Check for collision with Enemy Laser
+        if(isTouching(EnemyLaser.class))
+        {
+            if (hasShield) 
+            {
+                removeTouching(EnemyLaser.class); // remove enemy laser
+                removeShield(); // remove shield
+            }
+            else
+            {
+                removeTouching(EnemyLaser.class); // remove enemy laser
+                MyWorld world = (MyWorld) getWorld(); // get the world the Hero is in
+                world.gameOver = true; // set the gameOver flag to true
+                world.gameOver(); // call the game over method
+                getWorld().removeObject(this); // remove the Hero from the world
+            }
+        }
+        if(getWorld() != null)
+        {
+            // Check for collision with Enemy
+            if (isTouching(Enemy.class))
+            {
+                if (hasShield) //check for shield
+                {
+                    removeTouching(Enemy.class); // remove the enemy
+                    removeShield(); // remove shield
+                }
+                else
+                {
+                    removeTouching(Enemy.class); // remove the enemy
+                    MyWorld world = (MyWorld) getWorld(); // get the world the Hero is in
+                    world.gameOver = true; // set the gameOver flag to true
+                    world.gameOver(); // call the game over method
+                    getWorld().removeObject(this); // remove the Hero from the world
+                }
+                
+            }
+        }
+    }
+    
+    private void collectShield() 
+    {
+        hasShield = true; // set the shield flag to true
+        setImage("spaceship_shield.png"); // change the Hero's image to show the shield
+        removeTouching(Shield.class); // Remove the shield power-up
+    }
+
+    private void removeShield() 
+    {
+        hasShield = false; // set the shield flag to false
+        resize(); // resize the Hero's image to remove the shield
     }
 }

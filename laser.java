@@ -2,8 +2,9 @@ import greenfoot.*;
 
 /**
  * Write a description of class Laser here.
- * @author Ostin H
- * @version 06/10/2024
+ * 
+ * @author Ostin H.
+ * @version 06/14/2024
  */
 public class Laser extends Actor
 {
@@ -14,6 +15,9 @@ public class Laser extends Actor
         resize(); // resize the laser image
     }
     
+    /**
+     * Resize the laser image.
+     */
     public void resize()
     {
         GreenfootImage img = new GreenfootImage("laser.png"); // load the laser image
@@ -38,6 +42,9 @@ public class Laser extends Actor
         }
     }
     
+    /**
+     * Check for collisions with enemies and remove them.
+     */
     public void kill()
     {
         if (isTouching(Enemy.class)) // check if the laser is touching an enemy

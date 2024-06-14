@@ -1,10 +1,10 @@
-import greenfoot.*;  
+import greenfoot.*;  // import necessary classes from Greenfoot package
 
 /**
  * Write a description of class EnemyLaser here.
  * 
- * @author Ostin H
- * @version 06/10/2024
+ * @author Ostin H.
+ * @version 06/14/2024
  */
 public class EnemyLaser extends Actor
 {
@@ -16,6 +16,9 @@ public class EnemyLaser extends Actor
         resize(); // resize the enemy laser image
     }
     
+    /**
+     * Resize the enemy laser image.
+     */
     public void resize()
     {
         GreenfootImage img = new GreenfootImage("enemy_laser.png"); // load the enemy laser image
@@ -33,22 +36,6 @@ public class EnemyLaser extends Actor
         if (isAtEdge()) // check if the laser is at the edge of the screen
         {
             getWorld().removeObject(this); // remove the laser from the world if it is at the edge
-        }
-        else
-        {
-            kill(); // check for collisions with the hero
-        }
-    }
-    
-    public void kill()
-    {
-        MyWorld world = (MyWorld) getWorld();
-        if (isTouching(Hero.class)) // check if the laser is touching the hero
-        {
-            removeTouching(Hero.class); // remove the hero that the laser is touching
-            world.gameOver(); // call the game over method
-            world.gameOver = true; // set the gameOver flag to true
-            getWorld().removeObject(this); // remove the laser from the world   
         }
     }
 }
