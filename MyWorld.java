@@ -8,6 +8,8 @@ import greenfoot.*;
  */
 public class MyWorld extends World
 {
+    GreenfootSound gameOverSound = new GreenfootSound("gameover.mp3");
+    GreenfootSound levelUpSound = new GreenfootSound("levelup.mp3");
     private int shieldSpawnTimer = 0; // variable to count frames for shield spawning
     private int enemySpawnTimer = 0; // variable to count frames for enemy spawning
     public boolean gameOver = false; // flag to indicate if the game is over
@@ -174,6 +176,7 @@ public class MyWorld extends World
      */
     public void gameOver()
     {
+        gameOverSound.play();
         removeObjects(getObjects(Enemy.class)); // Remove all Enemy objects from the world
         removeObjects(getObjects(EnemyLaser.class)); // Remove all EnemyLaser objects from the world
         
@@ -202,6 +205,7 @@ public class MyWorld extends World
      */
     private void showLevelUpMessage()
     {  
+        levelUpSound.play();
         addObject(levelUpLabel, getWidth() / 2, getHeight() / 2); // Add the "Level Up!" label to the middle of the screen
         levelUpMessageTimer = 60; // Displays for 60 frames
     }

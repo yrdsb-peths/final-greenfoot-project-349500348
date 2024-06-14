@@ -9,7 +9,7 @@ import greenfoot.*;
 public class Laser extends Actor
 {
     private final int speed = 5; // speed at which the laser moves
-
+    GreenfootSound destroySound = new GreenfootSound("explosion.mp3");
     public Laser()
     {
         resize(); // resize the laser image
@@ -49,6 +49,7 @@ public class Laser extends Actor
     {
         if (isTouching(Enemy.class)) // check if the laser is touching an enemy
         {
+            destroySound.play();
             MyWorld world = (MyWorld) getWorld();
             world.increaseScore();
             removeTouching(Enemy.class); // remove the enemy that the laser is touching

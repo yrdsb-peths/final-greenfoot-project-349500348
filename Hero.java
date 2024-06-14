@@ -11,10 +11,12 @@ import greenfoot.*;
 public class Hero extends Actor
 {
     private int shootTimer; // variable to count frames between shots
-    private final int shootSpeed = 20; // number of frames before Hero can shoot again
+    private final int shootSpeed = 40; // number of frames before Hero can shoot again
     private final int speed = 4; // number of pixels the Hero moves per frame while key is pressed
     private boolean hasShield = false; // indicates if the Hero has a shield
     private boolean removedFromWorld = false; // indicates if the Hero has been removed from the world
+    GreenfootSound destroySound = new GreenfootSound("explosion.mp3");
+    GreenfootSound shootSound = new GreenfootSound("laserzap.mp3");
 
     public Hero()
     {
@@ -61,6 +63,8 @@ public class Hero extends Actor
     
     public void shoot()
     {
+        shootSound.play();
+
         Laser laser = new Laser(); // creates a Laser object
         
         MyWorld world = (MyWorld) getWorld(); // gets the world the Hero is in
@@ -85,11 +89,13 @@ public class Hero extends Actor
         {
             if (hasShield) 
             {
+                destroySound.play();
                 removeTouching(EnemyLaser.class); // remove enemy laser
                 removeShield(); // remove shield
             }
             else
             {
+                destroySound.play();
                 removeTouching(EnemyLaser.class); // remove enemy laser
                 MyWorld world = (MyWorld) getWorld(); // get the world the Hero is in
                 world.gameOver = true; // set the gameOver flag to true
@@ -104,11 +110,13 @@ public class Hero extends Actor
             {
                 if (hasShield) //check for shield
                 {
+                    destroySound.play();
                     removeTouching(Enemy.class); // remove the enemy
                     removeShield(); // remove shield
                 }
                 else
                 {
+                    destroySound.play();
                     removeTouching(Enemy.class); // remove the enemy
                     MyWorld world = (MyWorld) getWorld(); // get the world the Hero is in
                     world.gameOver = true; // set the gameOver flag to true
